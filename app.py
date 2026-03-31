@@ -50,8 +50,23 @@ ui_texts = {
         "C": "OpenAI 回應錯誤：{error}"
     },
     "gpt_system_prompt": {
-        "E": "You are an AI teaching assistant skilled in guiding creative thinking",
-        "C": "你是一位擅長引導創意思考的 AI 助教"
+        "E": """You are an AI teaching assistant helping students with a class activity about hotel sustainability and creativity.
+
+Activity context:
+You are participating in a competition aimed at finding the best ideas for a hotel located in an urban business district to find good uses for the waste it generates. The hotel is situated next to a hospital, a convention center, and a major tourist attraction. Its guests are mainly composed of: (1) Business travelers, (2) Convention attendees, (3) Friends and families of patients, and (4) Tourists. Students are required to propose creative ideas based on the item: "Old towels to be disposed of." Winning ideas should transform hotel waste into something that delights guests and be creative.
+
+Your role:
+- Answer questions related to this hotel activity, sustainability, hospitality, or creative problem-solving.
+- If a question is unrelated to hotels, hospitality, or this activity, politely redirect the student back to the activity instead of answering.""",
+
+        "C": """你是一位協助學生進行旅館創意活動的 AI 助教。
+
+活動背景：
+這是一個關於旅館永續發展的競賽活動。旅館位於城市商業區，鄰近醫院、會議中心與主要觀光景點，住客主要為：(1) 商務旅客、(2) 會議參加者、(3) 病患的親友、(4) 觀光客。學生需針對「即將丟棄的舊毛巾」提出最具創意的再利用方案，讓廢棄物能讓顧客感到驚喜。
+
+你的角色：
+- 回答與旅館、餐旅業、永續發展或創意思考相關的問題。
+- 若學生提問與旅館活動無關，請禮貌地引導他們回到活動主題，而非直接回答。"""
     },
 
     # 第4頁 - 最終創意
@@ -364,38 +379,38 @@ elif st.session_state.page == 5:
                 "ai_experience_section": {
                     "title": "第三部分：您使用 AI 工具的經驗",
                     "questions": [
-                        "使用 HOSTEL-AI改善了我解決個案研究的表現。",
-                        "這個 HOSTEL-AI讓我能比自己單獨作業時更快擬定問題。",
-                        "我發現HOSTEL-AI對於產生「更多樣化」的問題很有用。",
-                        "使用HOSTEL-AI讓我更容易理解核心問題所在。",
-                        "整體而言，我覺得HOSTEL-AI對我的學習過程很有用。",
-                        "我與 HOSTEL-AI的互動過程是清晰易懂的。",
-                        "我很容易就能熟練地使用HOSTEL-AI。",
+                        "使用 小Q改善了我解決個案研究的表現。",
+                        "這個 小Q讓我能比自己單獨作業時更快擬定問題。",
+                        "我發現小Q對於產生「更多樣化」的問題很有用。",
+                        "使用小Q讓我更容易理解核心問題所在。",
+                        "整體而言，我覺得小Q對我的學習過程很有用。",
+                        "我與 小Q的互動過程是清晰易懂的。",
+                        "我很容易就能熟練地使用小Q。",
                         "餐旅業的科技發展相當迅速。為了證明您有詳閱這些敘述，請忽略量表選項，直接在本題選擇「普通」(4)。",
-                        "我覺得HOSTEL-AI很容易互動（例如：聊天介面很直觀）。",
-                        "我能輕鬆透過HOSTEL-AI獲得我需要的協助。",
-                        "我不需要花費太多心力去學習如何操作HOSTEL-AI。"
+                        "我覺得小Q很容易互動（例如：聊天介面很直觀）。",
+                        "我能輕鬆透過小Q獲得我需要的協助。",
+                        "我不需要花費太多心力去學習如何操作小Q。"
                     ]
                 },
                 "outcomes": {
                     "title": "第四部分：成果與反思",
                     "questions": [
-                        "HOSTEL-AI幫助我針對問題產生了大量的提問（流暢力）。",
-                        "在 HOSTEL-AI的協助下，我能比平常提出更多的解決方案。",
-                        "HOSTEL-AI幫助我從不同的角度或觀點來看待問題（變通力）。",
-                        "HOSTEL-AI的建議幫助我打破了最初的既定假設或固著觀點。",
+                        "小Q幫助我針對問題產生了大量的提問（流暢力）。",
+                        "在 小Q的協助下，我能比平常提出更多的解決方案。",
+                        "小Q幫助我從不同的角度或觀點來看待問題（變通力）。",
+                        "小Q的建議幫助我打破了最初的既定假設或固著觀點。",
                         "為了驗證我們資料的品質，請在本題直接選擇「非常同意」(7)。",
                         "我能輕鬆地在不同類型的問題（例如：策略性 vs. 營運性）之間切換。",
-                        "我透過HOSTEL-AI擬定的問題是獨特且創新的（獨創力）。",
-                        "HOSTEL-AI幫助我發現了一些我自己絕對想不到的想法。",
+                        "我透過小Q擬定的問題是獨特且創新的（獨創力）。",
+                        "小Q幫助我發現了一些我自己絕對想不到的想法。",
                         "與標準答案相比，我提出的最終解決方案相當新穎。"
                     ]
                 },
                 "future": {
                     "title": "第五部分：未來展望",
                     "questions": [
-                        "假設我能使用HOSTEL-AI，我打算在未來的課堂作業中使用它。",
-                        "我會向其他餐旅系學生推薦HOSTEL-AI。"
+                        "假設我能使用小Q，我打算在未來的課堂作業中使用它。",
+                        "我會向其他餐旅系學生推薦小Q。"
                     ]
                 }
             }
