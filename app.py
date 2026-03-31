@@ -1,24 +1,23 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-from chat import LLM
 from openai import OpenAI
 from challenge_page import show_challenge_page
 from google_sheet_sync import write_to_google_sheet
 
 st.set_page_config(page_title="Questo - Creativity Assistant", layout="centered")
+
 # 🔁 接收網址中的 page=? 參數
 query_params = st.query_params
 if "page" in query_params and query_params["page"].isdigit():
     st.session_state.page = int(query_params["page"])
-    
+
 titles = {
     1: {"E": "🏁 Event Challenge Description", "C": "🏁 活動挑戰說明"},
     2: {"E": "💡 Initial Idea Generation", "C": "💡 初步構想發想"},
-    3: {"E": "🧠 Ask AI Assistant – Little Q", "C": "🧠 與Questo AI 助教對話"},
-    4: {"E": "💬 Chat with GPT", "C": "💬 與 ChatGPT 真實對話"},
-    5: {"E": "📝 Submit Final Creative Ideas", "C": "📝 整合創意成果"},
-    6: {"E": "🎯 Feedback Questionnaire", "C": "🎯 小Q體驗問卷調查"},
+    3: {"E": "💬 Chat with GPT", "C": "💬 與 ChatGPT 真實對話"},
+    4: {"E": "📝 Submit Final Creative Ideas", "C": "📝 整合創意成果"},
+    5: {"E": "🎯 Feedback Questionnaire", "C": "🎯 問卷調查"},
 }
 
 # ✅ 完整的語言文字字典
@@ -32,22 +31,8 @@ ui_texts = {
         "E": "⚠️ Please enter your ideas first!",
         "C": "⚠️ 請先輸入構想內容！"
     },
-    
-    # 第3頁 - 小Q對話
-    "littleq_input_prompt": {
-        "E": "Now, you can use our AI Questioning Assistant, called 'Questo', to refine your questioning technique and generate more effective questions.Before you begin, please spend at least 5 minutes using Questo to ask questions related to the challenge of using old hotel towels to delight guests. Instead of providing answers, Questo will offer suggestions and recommendations on how to improve your questions. This will help you learn how to ask better questions and explore different perspectives. You can engage with Questo for as long as you like. When you're ready, click 'Next' to continue. Remember, Questo is designed to help you enhance your questioning skills, which is crucial for creative problem-solving.",
-        "C": "現在，你可以使用我們名為 「Questo」 的 AI 提問助手，來磨練你的提問技巧並產生更有價值的問題。在開始之前，請至少花 5 分鐘 使用 Questo，針對**「如何利用舊飯店毛巾來驚艷顧客」**這個挑戰進行提問。Questo 不會直接給你答案，而是會針對如何改進你的提問方式提供建議與推薦。這將幫助你學習如何提問得更精確，並探索不同的觀點。你可以根據需求與 Questo 進行任何時長的互動。準備好後，請點擊「下一步」繼續。請記住，Questo 旨在幫助你提升提問技巧，而這正是創意解難（Creative Problem-solving）的關鍵。"
-    },
-    "littleq_submit_button": {
-        "E": "Submit Question",
-        "C": "送出問題"
-    },
-    "littleq_no_response": {
-        "E": "⚠️ Little Q has no suggestions at the moment",
-        "C": "⚠️ 小Q暫時無提供建議"
-    },
-    
-    # 第4頁 - ChatGPT對話
+
+    # 第3頁 - ChatGPT對話
     "gpt_input_label": {
         "E": "To spark your imagination, start by asking ChatGPT some questions about the hotel towel challenge below. See what ideas and insights you can gain, then use that inspiration to propose three more creative ideas.",
         "C": "為了激發你的想像力，請先針對下方的飯店毛巾挑戰向 ChatGPT 提出一些問題。看看你能獲得哪些靈感與洞察."
@@ -68,8 +53,8 @@ ui_texts = {
         "E": "You are an AI teaching assistant skilled in guiding creative thinking",
         "C": "你是一位擅長引導創意思考的 AI 助教"
     },
-    
-    # 第5頁 - 最終創意
+
+    # 第4頁 - 最終創意
     "final_idea_prompt": {
         "E": "Based on your experience and exploration, what are the three most creative ideas you can come up with?",
         "C": "根據您的體驗與探索，您能想到的三個最具創意的想法是什麼？"
@@ -82,8 +67,8 @@ ui_texts = {
         "E": "✅ Final ideas saved! Please continue to complete the questionnaire",
         "C": "✅ 最終創意已儲存！請繼續完成問卷"
     },
-    
-    # 第6頁 - 問卷
+
+    # 第5頁 - 問卷
     "survey_submit": {
         "E": "📩 Submit Questionnaire",
         "C": "📩 送出問卷"
@@ -96,8 +81,8 @@ ui_texts = {
         "E": "⚠️ Google Sheet backup failed: {error}",
         "C": "⚠️ Google Sheet 備份失敗：{error}"
     },
-    
-    # 第7頁 - 教師報表
+
+    # 第6頁 - 教師報表
     "admin_title": {
         "E": "🔒 Teacher Report Dashboard",
         "C": "🔒 教師後台報表"
@@ -134,14 +119,14 @@ ui_texts = {
         "E": "📥 Click to Download PDF",
         "C": "📥 點我下載 PDF"
     },
-    
+
     # 通用按鈕
     "next_button": {
         "E": "Next",
         "C": "下一頁"
     },
     "back_button": {
-        "E": "Back", 
+        "E": "Back",
         "C": "上一頁"
     },
     "next_back_button": {
@@ -154,48 +139,23 @@ ui_texts = {
     }
 }
 
-questions_text = {
-    "instruction": {
-        "E": "Based on your experience with this activity, choose the score that best represents your feelings. (1 = Strongly Disagree, 5 = Strongly Agree)",
-        "C": "請根據您在這次活動中的經驗，選擇最符合您感受的分數（1 = 非常不同意，5 = 非常同意）"
-    },
-    "questions": {
-        "E": [
-            "I found Little Q easy to use.",
-            "The interaction flow was smooth and clear.",
-            "Little Q's feedback was helpful.",
-            "I would recommend Little Q to others.",
-            "The interaction helped me think more creatively.",
-            "Other comments or suggestions (optional)"
-        ],
-        "C": [
-            "小Q提問助手的介面容易使用",
-            "整體互動流程清楚、順暢",
-            "小Q的回饋對我有幫助",
-            "我會推薦小Q給其他人",
-            "與小Q的互動提升了我的創意思考",
-            "其他建議或意見（非必填）"
-        ]
-    }
-}
-
 if 'page' not in st.session_state:
     st.session_state.page = 1
+
 if 'user_id' not in st.session_state:
     st.session_state.user_id = f"User_{datetime.now().strftime('%H%M%S')}"
-if 'chat_history' not in st.session_state:
-    st.session_state.chat_history = []
+
 if 'gpt_chat' not in st.session_state:
     st.session_state.gpt_chat = []
-if 'llm' not in st.session_state:
-    st.session_state.llm = LLM()
+
 if 'language' not in st.session_state:
     st.session_state.language = "English"
+
 if 'maintenance_mode' not in st.session_state:
-    st.session_state.maintenance_mode = False  # ✅ 加入維護模式開關
+    st.session_state.maintenance_mode = False
 
 st.markdown(
-    "<div style='text-align: right; font-size: 0.9em;'>🔐 <a href='?page=7'>教師報表頁</a></div>",
+    "<div style='text-align: right; font-size: 0.9em;'>🔐 <a href='?page=6'>教師報表頁</a></div>",
     unsafe_allow_html=True
 )
 
@@ -211,20 +171,24 @@ lang_code = "E" if st.session_state.language == "English" else "C"
 
 def next_page():
     st.session_state.page += 1
+
 def prev_page():
     st.session_state.page -= 1
 
+# ── Page 1: Challenge Description ──────────────────────────────────────────
 if st.session_state.page == 1:
     show_challenge_page(lang_code, next_page)
-    
     st.button("下一頁 / Next", on_click=next_page)
 
+# ── Page 2: Initial Idea Generation ────────────────────────────────────────
 elif st.session_state.page == 2:
     st.title(titles[st.session_state.page][lang_code])
+
     if 'activity_warning' not in st.session_state:
         st.session_state.activity_warning = False
 
     activity = st.text_area(ui_texts["idea_input_label"][lang_code], value=st.session_state.get("activity", ""))
+
     if activity.strip():
         st.session_state.activity_warning = False
 
@@ -233,7 +197,6 @@ elif st.session_state.page == 2:
             st.session_state.activity_warning = True
         else:
             st.session_state.activity = activity
-            st.session_state.llm.setup_language_and_activity(lang_code, activity)
             next_page()
 
     if st.session_state.activity_warning:
@@ -241,50 +204,12 @@ elif st.session_state.page == 2:
 
     st.button(ui_texts["back_next_button"][lang_code], on_click=prev_page)
 
+# ── Page 3: Chat with GPT ───────────────────────────────────────────────────
 elif st.session_state.page == 3:
     st.title(titles[st.session_state.page][lang_code])
 
-    for q, r in st.session_state.chat_history:
-        with st.chat_message("user"):
-            st.write(q)
-        with st.chat_message("assistant"):
-            reply = r['OUTPUT']['GUIDE'] or r['OUTPUT']['EVAL']
-            st.write(reply if reply.strip() else ui_texts["littleq_no_response"][lang_code])
-
-    with st.form("question_form"):
-        # ✅ 修正：使用動態語言文字
-        question = st.text_input(ui_texts["littleq_input_prompt"][lang_code], key="input_q")
-        submitted = st.form_submit_button(f"{ui_texts['littleq_submit_button'][lang_code]} / Submit")
-
-        if submitted and question.strip() and question.lower() != "end":
-            llm_response = st.session_state.llm.Chat(question, lang_code, st.session_state.activity)
-            st.session_state.chat_history.append((question, llm_response))
-            st.rerun()  # ← 加入這行確保立即更新畫面
-            try:
-                df = pd.read_excel("Database.xlsx")
-            except:
-                df = pd.DataFrame()
-            new_row = {
-                "時間戳記": datetime.now().isoformat(),
-                "使用者編號": st.session_state.user_id,
-                "語言": st.session_state.language,
-                "原始問題": question,
-                "問題類型": llm_response['OUTPUT']['CLS'],
-                "AI 回饋": llm_response['OUTPUT']['GUIDE'] or llm_response['OUTPUT']['EVAL'],
-                "改寫建議": llm_response['OUTPUT']['NEWQ'],
-                "SCAMPER 類型": llm_response['MISC']['SCAMPER_ELEMENT'],
-                "成本估算": llm_response['MISC']['cost_input'] + llm_response['MISC']['cost_output']
-            }
-            df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
-            df.to_excel("Database.xlsx", index=False)
-
-    # ✅ 修正：使用動態語言文字
-    st.button(ui_texts["next_back_button"][lang_code], on_click=next_page)
-    st.button(ui_texts["back_next_button"][lang_code], on_click=prev_page)
-
-elif st.session_state.page == 4:
-    st.title(titles[st.session_state.page][lang_code])
     msg = st.text_input(ui_texts["gpt_input_label"][lang_code], key="gpt_input")
+
     if st.button(ui_texts["gpt_submit_button"][lang_code]):
         if "OPENAI_API_KEY" not in st.secrets:
             st.error(ui_texts["gpt_api_error"][lang_code])
@@ -295,6 +220,7 @@ elif st.session_state.page == 4:
                 for role, txt in st.session_state.gpt_chat:
                     history.append({"role": "user" if role == "user" else "assistant", "content": txt})
                 history.append({"role": "user", "content": msg})
+
                 response = client.chat.completions.create(
                     model="gpt-4o-mini",
                     messages=history
@@ -311,9 +237,11 @@ elif st.session_state.page == 4:
 
     st.button(ui_texts["next_back_button"][lang_code], on_click=next_page)
     st.button(ui_texts["back_next_button"][lang_code], on_click=prev_page)
-# 第 5 頁：最終創意發想（不寫入 Excel，只存入 session_state）
-elif st.session_state.page == 5:
+
+# ── Page 4: Final Creative Ideas ────────────────────────────────────────────
+elif st.session_state.page == 4:
     st.title(titles[st.session_state.page][lang_code])
+
     final_ideas = st.text_area(ui_texts["final_idea_prompt"][lang_code])
 
     if st.button(f"{ui_texts['final_idea_submit'][lang_code]} / Submit Final Ideas", key="submit_final_idea"):
@@ -322,9 +250,9 @@ elif st.session_state.page == 5:
 
     st.button(ui_texts["back_next_button"][lang_code], on_click=prev_page, key="back_from_final")
     st.button(ui_texts["next_back_button"][lang_code], on_click=next_page)
-# 第 6 頁：體驗問卷 + 資料整合寫入
-elif st.session_state.page == 6:
-    # ✅ 完整的7分量表問卷
+
+# ── Page 5: Survey ──────────────────────────────────────────────────────────
+elif st.session_state.page == 5:
     questionnaire_data = {
         "title": {
             "E": "🎯 Research Questionnaire",
@@ -333,7 +261,7 @@ elif st.session_state.page == 6:
         "scale_options": {
             "E": [
                 "1: Strongly disagree",
-                "2: Disagree", 
+                "2: Disagree",
                 "3: Slightly disagree",
                 "4: Neutral",
                 "5: Slightly agree",
@@ -343,7 +271,7 @@ elif st.session_state.page == 6:
             "C": [
                 "1: 非常不同意",
                 "2: 不同意",
-                "3: 有點不同意", 
+                "3: 有點不同意",
                 "4: 普通",
                 "5: 有點同意",
                 "6: 同意",
@@ -355,30 +283,10 @@ elif st.session_state.page == 6:
                 "demographics": {
                     "title": "Section 1: Demographics",
                     "questions": [
-                        {
-                            "text": "Gender:",
-                            "type": "radio",
-                            "options": ["Male", "Female", "Prefer not to say"],
-                            "key": "gender"
-                        },
-                        {
-                            "text": "Year of Study:",
-                            "type": "radio", 
-                            "options": ["2nd Year", "3rd Year", "4th Year", "Graduate"],
-                            "key": "year_study"
-                        },
-                        {
-                            "text": "Major:",
-                            "type": "radio",
-                            "options": ["College of Hospitality", "College of Tourism", "College of Culinary Arts", "College of International Studies", "Other"],
-                            "key": "major"
-                        },
-                        {
-                            "text": "Prior Experience with Generative AI:",
-                            "type": "radio",
-                            "options": ["Never used", "Novice", "Intermediate", "Advanced"],
-                            "key": "ai_experience"
-                        }
+                        {"text": "Gender:", "type": "radio", "options": ["Male", "Female", "Prefer not to say"], "key": "gender"},
+                        {"text": "Year of Study:", "type": "radio", "options": ["2nd Year", "3rd Year", "4th Year", "Graduate"], "key": "year_study"},
+                        {"text": "Major:", "type": "radio", "options": ["College of Hospitality", "College of Tourism", "College of Culinary Arts", "College of International Studies", "Other"], "key": "major"},
+                        {"text": "Prior Experience with Generative AI:", "type": "radio", "options": ["Never used", "Novice", "Intermediate", "Advanced"], "key": "ai_experience"}
                     ]
                 },
                 "problem_solving": {
@@ -435,30 +343,10 @@ elif st.session_state.page == 6:
                 "demographics": {
                     "title": "第一部分：基本資料",
                     "questions": [
-                        {
-                            "text": "生理性別：",
-                            "type": "radio",
-                            "options": ["男", "女", "不願透露"],
-                            "key": "gender"
-                        },
-                        {
-                            "text": "年級：",
-                            "type": "radio",
-                            "options": ["大二", "大三", "大四", "研究所"],
-                            "key": "year_study"
-                        },
-                        {
-                            "text": "主修科系：",
-                            "type": "radio",
-                            "options": ["餐旅學院", "觀光學院", "廚藝學院", "國際學院", "其他"],
-                            "key": "major"
-                        },
-                        {
-                            "text": "生成式 AI (如 ChatGPT) 使用經驗：",
-                            "type": "radio",
-                            "options": ["從未用過", "初學者 (偶爾嘗試)", "中等程度 (曾用於作業或日常事務)", "進階使用者 (經常使用並熟悉提示詞技巧)"],
-                            "key": "ai_experience"
-                        }
+                        {"text": "生理性別：", "type": "radio", "options": ["男", "女", "不願透露"], "key": "gender"},
+                        {"text": "年級：", "type": "radio", "options": ["大二", "大三", "大四", "研究所"], "key": "year_study"},
+                        {"text": "主修科系：", "type": "radio", "options": ["餐旅學院", "觀光學院", "廚藝學院", "國際學院", "其他"], "key": "major"},
+                        {"text": "生成式 AI (如 ChatGPT) 使用經驗：", "type": "radio", "options": ["從未用過", "初學者 (偶爾嘗試)", "中等程度 (曾用於作業或日常事務)", "進階使用者 (經常使用並熟悉提示詞技巧)"], "key": "ai_experience"}
                     ]
                 },
                 "problem_solving": {
@@ -519,58 +407,38 @@ elif st.session_state.page == 6:
 
     responses = {}
     scale_options = questionnaire_data["scale_options"][lang_code]
-    
+
     # Section 1: Demographics
     st.subheader(questionnaire_data["sections"][lang_code]["demographics"]["title"])
     for q_data in questionnaire_data["sections"][lang_code]["demographics"]["questions"]:
         responses[q_data["key"]] = st.radio(
-            q_data["text"], 
-            q_data["options"], 
+            q_data["text"],
+            q_data["options"],
             key=f"demo_{q_data['key']}"
         )
-    
-    # Section 2: Problem-Solving Style  
+
+    # Section 2: Problem-Solving Style
     st.subheader(questionnaire_data["sections"][lang_code]["problem_solving"]["title"])
     for i, question in enumerate(questionnaire_data["sections"][lang_code]["problem_solving"]["questions"]):
-        selected_option = st.radio(
-            question,
-            scale_options,
-            key=f"ps_{i+1}"
-        )
-        # 提取數字值用於資料儲存 (1-7)
+        selected_option = st.radio(question, scale_options, key=f"ps_{i+1}")
         responses[f"problem_solving_{i+1}"] = int(selected_option.split(":")[0])
-    
+
     # Section 3: AI Experience
     st.subheader(questionnaire_data["sections"][lang_code]["ai_experience_section"]["title"])
     for i, question in enumerate(questionnaire_data["sections"][lang_code]["ai_experience_section"]["questions"]):
-        selected_option = st.radio(
-            question,
-            scale_options,
-            key=f"ai_exp_{i+1}"
-        )
-        # 提取數字值用於資料儲存 (1-7)
+        selected_option = st.radio(question, scale_options, key=f"ai_exp_{i+1}")
         responses[f"ai_experience_{i+1}"] = int(selected_option.split(":")[0])
-    
-    # Section 5: Outcomes (Note: keeping as Section 5 as per original)
+
+    # Section 4: Outcomes
     st.subheader(questionnaire_data["sections"][lang_code]["outcomes"]["title"])
     for i, question in enumerate(questionnaire_data["sections"][lang_code]["outcomes"]["questions"]):
-        selected_option = st.radio(
-            question,
-            scale_options,
-            key=f"outcomes_{i+1}"
-        )
-        # 提取數字值用於資料儲存 (1-7)
+        selected_option = st.radio(question, scale_options, key=f"outcomes_{i+1}")
         responses[f"outcomes_{i+1}"] = int(selected_option.split(":")[0])
-    
-    # Section 6: Future Outlook
+
+    # Section 5: Future Outlook
     st.subheader(questionnaire_data["sections"][lang_code]["future"]["title"])
     for i, question in enumerate(questionnaire_data["sections"][lang_code]["future"]["questions"]):
-        selected_option = st.radio(
-            question,
-            scale_options,
-            key=f"future_{i+1}"
-        )
-        # 提取數字值用於資料儲存 (1-7)
+        selected_option = st.radio(question, scale_options, key=f"future_{i+1}")
         responses[f"future_{i+1}"] = int(selected_option.split(":")[0])
 
     if st.button(ui_texts["survey_submit"][lang_code], key="submit_survey_final"):
@@ -587,33 +455,26 @@ elif st.session_state.page == 6:
             "最終構想": st.session_state.get("final_idea", "")
         }
 
-        # 小Q 對話
-        for i, (q, r) in enumerate(st.session_state.get("chat_history", [])):
-            final_row[f"小Q 問題{i+1}"] = q
-            final_row[f"小Q 回覆{i+1}"] = r['OUTPUT']['GUIDE'] or r['OUTPUT']['EVAL']
-
         # GPT 對話
         gpt_interactions = [item for item in st.session_state.get("gpt_chat", []) if item[0] == "user"]
         for i, (role, text) in enumerate(gpt_interactions):
             final_row[f"GPT 問題{i+1}"] = text
 
-        # ✅ 問卷結果 - 新的完整版本
+        # 問卷結果
         final_row.update(responses)
 
-        # ✅ 寫入本地 Excel
         df = pd.concat([df, pd.DataFrame([final_row])], ignore_index=True)
         df.to_excel("Database.xlsx", index=False)
         st.success(ui_texts["survey_success"][lang_code])
 
-        # ✅ 寫入 Google Sheet（失敗時提示）
         try:
             from google_sheet_sync import write_to_google_sheet
             write_to_google_sheet(final_row)
         except Exception as e:
             st.warning(ui_texts["survey_backup_warning"][lang_code].format(error=e))
 
-# 第 7 頁：教師報表頁
-elif st.session_state.page == 7:
+# ── Page 6: Teacher Dashboard ───────────────────────────────────────────────
+elif st.session_state.page == 6:
     st.title(ui_texts["admin_title"][lang_code])
 
     PASSWORD = "!@#$123456"
@@ -636,13 +497,14 @@ elif st.session_state.page == 7:
     else:
         st.dataframe(df)
 
-        # ✅ 提供 Excel 匯出
-        st.download_button(ui_texts["admin_export_excel"][lang_code], data=open("Database.xlsx", "rb").read(), file_name="Database.xlsx")
+        st.download_button(
+            ui_texts["admin_export_excel"][lang_code],
+            data=open("Database.xlsx", "rb").read(),
+            file_name="Database.xlsx"
+        )
 
-        # ✅ 匯出 PDF
         from io import BytesIO
         from fpdf import FPDF
-        from datetime import datetime
 
         if st.button(ui_texts["admin_export_pdf"][lang_code], key="dl_pdf"):
             pdf = FPDF()
@@ -664,4 +526,9 @@ elif st.session_state.page == 7:
             buffer = BytesIO()
             pdf.output(buffer)
             pdf_bytes = buffer.getvalue()
-            st.download_button(ui_texts["admin_download_pdf"][lang_code], data=pdf_bytes, file_name=f"report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf")
+
+            st.download_button(
+                ui_texts["admin_download_pdf"][lang_code],
+                data=pdf_bytes,
+                file_name=f"report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
+            )
