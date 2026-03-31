@@ -1,0 +1,15 @@
+streamlit
+pandas
+fpdf
+openpyxl
+gspread
+oauth2client
+streamlit
+tiktoken
+pydantic
+langchain-openai
+langchain-core
+langchain
+openai
+pydantic>=2
+opencc-python-reimplemented
