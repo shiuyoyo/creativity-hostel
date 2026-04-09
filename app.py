@@ -267,11 +267,12 @@ elif st.session_state.page == 4:
     st.button(ui_texts["next_back_button"][lang_code], on_click=next_page)
 
 # ── Page 5: Survey ──────────────────────────────────────────────────────────
+# ── Page 5: Survey ──────────────────────────────────────────────────────────
 elif st.session_state.page == 5:
     questionnaire_data = {
         "title": {
-            "E": "🎯 Research Questionnaire",
-            "C": "🎯 研究問卷調查"
+            "E": " Research Questionnaire",
+            "C": " 研究問卷調查"
         },
         "scale_options": {
             "E": [
@@ -319,30 +320,30 @@ elif st.session_state.page == 5:
                 "ai_experience_section": {
                     "title": "Section 3: Your Experience Using the AI Tool",
                     "questions": [
-                        "Using Questo improves my performance in solving the assigned case study.",
-                        "Questo enables me to formulate questions more quickly than I could alone.",
-                        "I find Questo useful for generating a wider variety of questions.",
-                        "Using Questo makes it easier to understand the core problem.",
-                        "Overall, I find Questo to be useful in my learning process.",
+                        "Using Generative AI improves my performance in solving the assigned case study.",
+                        "Generative AI enables me to formulate questions more quickly than I could alone.",
+                        "I find Generative AI useful for generating a wider variety of questions.",
+                        "Using Generative AI makes it easier to understand the core problem.",
+                        "Overall, I find Generative AI to be useful in my learning process.",
                         "My interaction with the AI Questioning Support Tool is clear and understandable.",
-                        "It is easy for me to become skillful at using Questo.",
-                        "Technology in hospitality is advancing rapidly. To show that you are reading the statements carefully, please ignore the scale and select \"Neutral\" (4) for this question.",
-                        "I find Questo easy to interact with (e.g., the chat interface is intuitive).",
-                        "Getting Questo to provide the help I needed was easy.",
-                        "I did not require a lot of mental effort to learn how to operate Questo."
+                        "It is easy for me to become skillful at using Generative AI.",
+                        "Technology in hospitality is advancing rapidly.\nTo show that you are reading the statements carefully, please ignore the scale and select \"Neutral\" (4) for this question.",
+                        "I find Generative AI easy to interact with (e.g., the chat interface is intuitive).",
+                        "Getting Generative AI to provide the help I needed was easy.",
+                        "I did not require a lot of mental effort to learn how to operate Generative AI."
                     ]
                 },
                 "outcomes": {
                     "title": "Section 4: Project Outcomes & Reflection",
                     "questions": [
-                        "Questo helped me generate a large number of questions regarding the problem.",
-                        "I was able to come up with more solutions than usual with the help of Questo.",
-                        "Questo helped me see the problem from different angles/perspectives.",
-                        "Questo's suggestions helped me break away from my initial, fixed assumptions.",
+                        "Generative AI helped me generate a large number of questions regarding the problem.",
+                        "I was able to come up with more solutions than usual with the help of Generative AI.",
+                        "Generative AI helped me see the problem from different angles/perspectives.",
+                        "Generative AI's suggestions helped me break away from my initial, fixed assumptions.",
                         "In order to verify the quality of our data, please select \"Strongly Agree\" (7) for this statement.",
-                        "I was able to switch between different types of questions (e.g., strategic vs. operational) easily.",
-                        "The questions I formulated with Questo were unique and innovative.",
-                        "Questo helped me discover ideas I would never have thought of on my own.",
+                        "I was able to switch between different types of questions (e.g., strategic vs.\noperational) easily.",
+                        "The questions I formulated with Generative AI were unique and innovative.",
+                        "Generative AI helped me discover ideas I would never have thought of on my own.",
                         "The final solution I proposed was novel compared to standard solutions."
                     ]
                 },
@@ -379,87 +380,135 @@ elif st.session_state.page == 5:
                 "ai_experience_section": {
                     "title": "第三部分：您使用 AI 工具的經驗",
                     "questions": [
-                        "使用 小Q改善了我解決個案研究的表現。",
-                        "這個 小Q讓我能比自己單獨作業時更快擬定問題。",
-                        "我發現小Q對於產生「更多樣化」的問題很有用。",
-                        "使用小Q讓我更容易理解核心問題所在。",
-                        "整體而言，我覺得小Q對我的學習過程很有用。",
-                        "我與 小Q的互動過程是清晰易懂的。",
-                        "我很容易就能熟練地使用小Q。",
+                        "使用 生成式AI改善了我解決個案研究的表現。",
+                        "這個 生成式AI讓我能比自己單獨作業時更快擬定問題。",
+                        "我發現生成式AI對於產生「更多樣化」的問題很有用。",
+                        "使用生成式AI讓我更容易理解核心問題所在。",
+                        "整體而言，我覺得生成式AI對我的學習過程很有用。",
+                        "我與 生成式AI的互動過程是清晰易懂的。",
+                        "我很容易就能熟練地使用生成式AI。",
                         "餐旅業的科技發展相當迅速。為了證明您有詳閱這些敘述，請忽略量表選項，直接在本題選擇「普通」(4)。",
-                        "我覺得小Q很容易互動（例如：聊天介面很直觀）。",
-                        "我能輕鬆透過小Q獲得我需要的協助。",
-                        "我不需要花費太多心力去學習如何操作小Q。"
+                        "我覺得生成式AI很容易互動（例如：聊天介面很直觀）。",
+                        "我能輕鬆透過生成式AI獲得我需要的協助。",
+                        "我不需要花費太多心力去學習如何操作生成式AI。"
                     ]
                 },
                 "outcomes": {
                     "title": "第四部分：成果與反思",
                     "questions": [
-                        "小Q幫助我針對問題產生了大量的提問（流暢力）。",
-                        "在 小Q的協助下，我能比平常提出更多的解決方案。",
-                        "小Q幫助我從不同的角度或觀點來看待問題（變通力）。",
-                        "小Q的建議幫助我打破了最初的既定假設或固著觀點。",
+                        "生成式AI幫助我針對問題產生了大量的提問（流暢力）。",
+                        "在 生成式AI的協助下，我能比平常提出更多的解決方案。",
+                        "生成式AI幫助我從不同的角度或觀點來看待問題（變通力）。",
+                        "生成式AI的建議幫助我打破了最初的既定假設或固著觀點。",
                         "為了驗證我們資料的品質，請在本題直接選擇「非常同意」(7)。",
-                        "我能輕鬆地在不同類型的問題（例如：策略性 vs. 營運性）之間切換。",
-                        "我透過小Q擬定的問題是獨特且創新的（獨創力）。",
-                        "小Q幫助我發現了一些我自己絕對想不到的想法。",
+                        "我能輕鬆地在不同類型的問題（例如：策略性 vs.\n營運性）之間切換。",
+                        "我透過生成式AI擬定的問題是獨特且創新的（獨創力）。",
+                        "生成式AI幫助我發現了一些我自己絕對想不到的想法。",
                         "與標準答案相比，我提出的最終解決方案相當新穎。"
                     ]
                 },
                 "future": {
                     "title": "第五部分：未來展望",
                     "questions": [
-                        "假設我能使用小Q，我打算在未來的課堂作業中使用它。",
-                        "我會向其他餐旅系學生推薦小Q。"
+                        "假設我能使用生成式AI，我打算在未來的課堂作業中使用它。",
+                        "我會向其他餐旅系學生推薦生成式AI。"
                     ]
                 }
             }
         }
     }
 
+    # 讓 validation 失敗後自動滑到最上方
+    if st.session_state.get("scroll_to_top", False):
+        st.markdown(
+            """
+            <script>
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            </script>
+            """,
+            unsafe_allow_html=True
+        )
+        st.session_state.scroll_to_top = False
+
     st.title(questionnaire_data["title"][lang_code])
     st.markdown(f"**Scale: {' | '.join(questionnaire_data['scale_options'][lang_code])}**")
 
     responses = {}
     scale_options = questionnaire_data["scale_options"][lang_code]
+    missing_fields = []
+
+    def show_required_warning(question_text):
+        st.markdown(
+            f"<div style='color:#d32f2f; font-weight:600; margin-top:-0.35rem; margin-bottom:0.6rem;'>❗ 此題尚未作答 / This item is required</div>",
+            unsafe_allow_html=True
+        )
+        missing_fields.append(question_text)
 
     # Section 1: Demographics
     st.subheader(questionnaire_data["sections"][lang_code]["demographics"]["title"])
+
     for q_data in questionnaire_data["sections"][lang_code]["demographics"]["questions"]:
-        responses[q_data["key"]] = st.radio(
+        selected_demo = st.radio(
             q_data["text"],
             q_data["options"],
+            index=None,
             key=f"demo_{q_data['key']}"
         )
 
-    # Section 2: Problem-Solving Style
-    st.subheader(questionnaire_data["sections"][lang_code]["problem_solving"]["title"])
-    for i, question in enumerate(questionnaire_data["sections"][lang_code]["problem_solving"]["questions"]):
-        selected_option = st.radio(question, scale_options, key=f"ps_{i+1}")
-        responses[f"problem_solving_{i+1}"] = int(selected_option.split(":")[0])
+        responses[q_data["key"]] = selected_demo
 
-    # Section 3: AI Experience
-    st.subheader(questionnaire_data["sections"][lang_code]["ai_experience_section"]["title"])
-    for i, question in enumerate(questionnaire_data["sections"][lang_code]["ai_experience_section"]["questions"]):
-        selected_option = st.radio(question, scale_options, key=f"ai_exp_{i+1}")
-        responses[f"ai_experience_{i+1}"] = int(selected_option.split(":")[0])
+        if selected_demo is None:
+            show_required_warning(q_data["text"])
 
-    # Section 4: Outcomes
-    st.subheader(questionnaire_data["sections"][lang_code]["outcomes"]["title"])
-    for i, question in enumerate(questionnaire_data["sections"][lang_code]["outcomes"]["questions"]):
-        selected_option = st.radio(question, scale_options, key=f"outcomes_{i+1}")
-        responses[f"outcomes_{i+1}"] = int(selected_option.split(":")[0])
+    # 共用 Likert section render
+    def render_likert_section(section_key, response_prefix, key_prefix):
+        st.subheader(questionnaire_data["sections"][lang_code][section_key]["title"])
 
-    # Section 5: Future Outlook
-    st.subheader(questionnaire_data["sections"][lang_code]["future"]["title"])
-    for i, question in enumerate(questionnaire_data["sections"][lang_code]["future"]["questions"]):
-        selected_option = st.radio(question, scale_options, key=f"future_{i+1}")
-        responses[f"future_{i+1}"] = int(selected_option.split(":")[0])
+        for i, question in enumerate(questionnaire_data["sections"][lang_code][section_key]["questions"], start=1):
+            selected_option = st.radio(
+                question,
+                scale_options,
+                index=None,
+                key=f"{key_prefix}_{i}"
+            )
+
+            if selected_option is None:
+                responses[f"{response_prefix}_{i}"] = None
+                show_required_warning(question)
+            else:
+                responses[f"{response_prefix}_{i}"] = int(selected_option.split(":")[0])
+
+    # Section 2–5
+    render_likert_section("problem_solving", "problem_solving", "ps")
+    render_likert_section("ai_experience_section", "ai_experience", "ai_exp")
+    render_likert_section("outcomes", "outcomes", "outcomes")
+    render_likert_section("future", "future", "future")
 
     if st.button(ui_texts["survey_submit"][lang_code], key="submit_survey_final"):
+        unanswered_items = [q for q in missing_fields if q]
+
+        if unanswered_items:
+            st.session_state.scroll_to_top = True
+            preview_missing = " / ".join(unanswered_items[:3])
+
+            if lang_code == "E":
+                st.error(
+                    f"❗ Please complete all questionnaire items before submitting.\n\n"
+                    f"Unanswered items: {len(unanswered_items)}\n"
+                    f"Examples: {preview_missing}"
+                )
+            else:
+                st.error(
+                    f"❗ 請先完成所有問卷題目再送出。\n\n"
+                    f"尚未填寫：{len(unanswered_items)} 題\n"
+                    f"例如：{preview_missing}"
+                )
+
+            st.rerun()
+
         try:
             df = pd.read_excel("Database.xlsx")
-        except:
+        except Exception:
             df = pd.DataFrame()
 
         final_row = {
@@ -472,14 +521,15 @@ elif st.session_state.page == 5:
 
         # GPT 對話
         gpt_interactions = [item for item in st.session_state.get("gpt_chat", []) if item[0] == "user"]
-        for i, (role, text) in enumerate(gpt_interactions):
-            final_row[f"GPT 問題{i+1}"] = text
+        for i, (role, text) in enumerate(gpt_interactions, start=1):
+            final_row[f"GPT 問題{i}"] = text
 
         # 問卷結果
         final_row.update(responses)
 
         df = pd.concat([df, pd.DataFrame([final_row])], ignore_index=True)
         df.to_excel("Database.xlsx", index=False)
+
         st.success(ui_texts["survey_success"][lang_code])
 
         try:
@@ -487,7 +537,6 @@ elif st.session_state.page == 5:
             write_to_google_sheet(final_row)
         except Exception as e:
             st.warning(ui_texts["survey_backup_warning"][lang_code].format(error=e))
-
 # ── Page 6: Teacher Dashboard ───────────────────────────────────────────────
 elif st.session_state.page == 6:
     st.title(ui_texts["admin_title"][lang_code])
