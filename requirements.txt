@@ -4,7 +4,7 @@ fpdf
 openpyxl
 gspread
 oauth2client
-streamlit
+streamlit>=1.27
 tiktoken
 pydantic
 langchain-openai
