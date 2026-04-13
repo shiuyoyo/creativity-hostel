@@ -301,7 +301,7 @@ elif st.session_state.page == 5:
                     "questions": [
                         {"text": "Gender:", "type": "radio", "options": ["Male", "Female", "Prefer not to say"], "key": "gender"},
                         {"text": "Year of Study:", "type": "radio", "options": ["2nd Year", "3rd Year", "4th Year", "Graduate"], "key": "year_study"},
-                        {"text": "Major:", "type": "radio", "options": ["College of Hospitality", "College of Tourism", "College of Culinary Arts", "College of International Studies", "Other"], "key": "major"},
+                        {"text": "Major:", "type": "radio", "options": ["Hospitality", "Tourism", "Culinary Arts", "Other"], "key": "major"},
                         {"text": "Prior Experience with Generative AI:", "type": "radio", "options": ["Never used", "Novice", "Intermediate", "Advanced"], "key": "ai_experience"}
                     ]
                 },
@@ -361,7 +361,7 @@ elif st.session_state.page == 5:
                     "questions": [
                         {"text": "生理性別：", "type": "radio", "options": ["男", "女", "不願透露"], "key": "gender"},
                         {"text": "年級：", "type": "radio", "options": ["大二", "大三", "大四", "研究所"], "key": "year_study"},
-                        {"text": "主修科系：", "type": "radio", "options": ["餐旅學院", "觀光學院", "廚藝學院", "國際學院", "其他"], "key": "major"},
+                        {"text": "主修科系：", "type": "radio", "options": ["餐旅", "觀光", "廚藝", "其他"], "key": "major"},
                         {"text": "生成式 AI (如 ChatGPT) 使用經驗：", "type": "radio", "options": ["從未用過", "初學者 (偶爾嘗試)", "中等程度 (曾用於作業或日常事務)", "進階使用者 (經常使用並熟悉提示詞技巧)"], "key": "ai_experience"}
                     ]
                 },
