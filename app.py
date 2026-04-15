@@ -519,10 +519,14 @@ elif st.session_state.page == 5:
             "最終構想": st.session_state.get("final_idea", "")
         }
 
-        # GPT 對話
-        gpt_interactions = [item for item in st.session_state.get("gpt_chat", []) if item[0] == "user"]
-        for i, (role, text) in enumerate(gpt_interactions, start=1):
-            final_row[f"GPT 問題{i}"] = text
+        # GPT 對話（問題 + 回覆）
+        gpt_idx = 1
+        for role, text in st.session_state.get("gpt_chat", []):
+            if role == "user":
+                final_row[f"GPT 問題{gpt_idx}"] = text
+            else:
+                final_row[f"GPT 回覆{gpt_idx}"] = text
+                gpt_idx += 1
 
         # 問卷結果
         final_row.update(responses)
