@@ -519,14 +519,24 @@ elif st.session_state.page == 5:
             "最終構想": st.session_state.get("final_idea", "")
         }
 
-        # GPT 對話（問題 + 回覆）
-        gpt_idx = 1
-        for role, text in st.session_state.get("gpt_chat", []):
-            if role == "user":
-                final_row[f"GPT 問題{gpt_idx}"] = text
-            else:
-                final_row[f"GPT 回覆{gpt_idx}"] = text
-                gpt_idx += 1
+        # ✅ 修正：最多 MAX_TURNS 輪）
+        MAX_TURNS = 15
+
+        # ✅ 修正：GPT 對話固定欄位，且補上 GPT 回覆
+        for i in range(1, MAX_TURNS + 1):
+            final_row[f"GPT 問題{i}"] = ""
+            final_row[f"GPT 回覆{i}"] = ""
+        gpt_chat = st.session_state.get("gpt_chat", [])
+        gpt_pairs = [
+            (gpt_chat[j][1], gpt_chat[j+1][1])
+            for j in range(0, len(gpt_chat) - 1, 2)
+            if gpt_chat[j][0] == "user" and gpt_chat[j+1][0] == "gpt"
+        ]
+        for i, (user_msg, gpt_msg) in enumerate(gpt_pairs):
+            if i >= MAX_TURNS:
+                break
+            final_row[f"GPT 問題{i+1}"] = user_msg
+            final_row[f"GPT 回覆{i+1}"] = gpt_msg  # ← 補上 GPT 回覆
 
         # 問卷結果
         final_row.update(responses)
